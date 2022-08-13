@@ -45,6 +45,13 @@
       "last 1 safari version"
     ]
   },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,css}": [
+      "npm run lint:fix",
+      "format",
+      "git add"
+    ]
+  },
   "devDependencies": {
     "@babel/core": "^7.18.10",
     "@babel/eslint-parser": "^7.18.9",
