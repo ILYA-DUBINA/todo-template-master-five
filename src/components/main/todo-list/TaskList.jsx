@@ -8,7 +8,7 @@ export default class TaskList extends Component {
     super(props);
   }
   render() {
-    let { todos, onDeleted, onToggleItem, onToggleItemEditing, updateItem } = this.props;
+    let { todos, onDeleted, onToggleItem, onToggleItemEditing, onStartTimer, onPauseTimer, updateItem } = this.props;
 
     let elements = todos.map((item) => {
       const { id } = item;
@@ -17,6 +17,8 @@ export default class TaskList extends Component {
         <Task
           key={id}
           {...item}
+          onStartTimer={() => onStartTimer(id)}
+          onPauseTimer={() => onPauseTimer(id)}
           onDeleted={() => onDeleted(id)}
           onToggleItem={() => onToggleItem(id)}
           onToggleItemEditing={() => onToggleItemEditing(id)}

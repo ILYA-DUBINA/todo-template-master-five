@@ -7,19 +7,26 @@ export default class NewTaskForm extends Component {
 
     this.state = {
       label: '',
+      minutes: '',
+      seconds: '',
     };
 
     this.onLabelChange = (e) => {
       this.setState({
-        label: e.target.value,
+        [e.target.name]: e.target.value,
       });
     };
 
     this.onSubmit = (e) => {
       e.preventDefault();
-      this.props.addItemElementForm(this.state.label);
+      let min = Number(this.state.minutes);
+      let sec = Number(this.state.seconds);
+      this.props.addItemElementForm(this.state.label, min, sec);
+      console.log(this.state);
       this.setState({
         label: '',
+        minutes: '',
+        seconds: '',
       });
     };
   }
@@ -29,8 +36,10 @@ export default class NewTaskForm extends Component {
       <>
         <header className="header">
           <h1>todos</h1>
-          <form onSubmit={this.onSubmit}>
+          <form className="new-todo-form" id="form" onSubmit={this.onSubmit}>
             <input
+              form="form"
+              name="label"
               type="text"
               className="new-todo"
               onChange={this.onLabelChange}
@@ -38,6 +47,27 @@ export default class NewTaskForm extends Component {
               value={this.state.label}
               autoFocus
             />
+            <input
+              form="form"
+              name="minutes"
+              type="number"
+              className="new-todo-form__timer"
+              placeholder="Min"
+              onChange={this.onLabelChange}
+              value={this.state.minutes}
+              autoFocus
+            />
+            <input
+              form="form"
+              name="seconds"
+              type="number"
+              className="new-todo-form__timer"
+              placeholder="Sec"
+              onChange={this.onLabelChange}
+              value={this.state.seconds}
+              autoFocus
+            />
+            <input style={{ display: 'none' }} type="submit" value="Submit" />
           </form>
         </header>
       </>

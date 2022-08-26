@@ -23,7 +23,20 @@ export default class Task extends Component {
   }
 
   render() {
-    let { name, description, onDeleted, onToggleItem, onToggleItemEditing, editing, completed, date } = this.props;
+    let {
+      name,
+      description,
+      onDeleted,
+      onToggleItem,
+      onToggleItemEditing,
+      onStartTimer,
+      onPauseTimer,
+      editing,
+      completed,
+      date,
+      minutes,
+      seconds,
+    } = this.props;
 
     if (completed) {
       name = 'completed';
@@ -42,7 +55,14 @@ export default class Task extends Component {
               <input className="toggle" type="checkbox" onClick={onToggleItem} />
             )}
             <label>
-              <span className="description">{description}</span>
+              <span className="title">{description}</span>
+              <span className="description">
+                <button className="icon icon-play" onClick={onStartTimer}></button>
+                <button className="icon icon-pause" onClick={onPauseTimer}></button>
+                <div>
+                  <span>{minutes}</span> : <span>{seconds}</span>
+                </div>
+              </span>
               <span className="created">created {formatDistanceToNow(date, { includeSeconds: true })} ago</span>
             </label>
             <button className="icon icon-edit" onClick={onToggleItemEditing}></button>
