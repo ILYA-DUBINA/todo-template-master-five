@@ -20,9 +20,8 @@ export default class NewTaskForm extends Component {
     this.onSubmit = (e) => {
       e.preventDefault();
       let min = Number(this.state.minutes);
-      let sec = Number(this.state.seconds);
+      let sec = this.state.seconds.length === 1 ? '0' + this.state.seconds : this.state.seconds;
       this.props.addItemElementForm(this.state.label, min, sec);
-      console.log(this.state);
       this.setState({
         label: '',
         minutes: '',

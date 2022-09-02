@@ -122,10 +122,16 @@ class AppContent extends Component {
             const oldItem = arrayElements[idx];
             let newItem;
 
-            newItem = { ...oldItem, seconds: oldItem.seconds + 1 };
+            newItem = {
+              ...oldItem,
+              seconds:
+                oldItem.seconds < '09'
+                  ? (parseInt(oldItem.seconds, 10) + 101).toString().substr(1)
+                  : +oldItem.seconds + 1,
+            };
 
             if (oldItem.seconds === 59) {
-              newItem = { ...oldItem, minutes: oldItem.minutes + 1, seconds: Number(oldItem.seconds === 0) };
+              newItem = { ...oldItem, minutes: oldItem.minutes + 1, seconds: (oldItem.seconds = '00') };
             }
 
             const newArrayElements = [...arrayElements.slice(0, idx), newItem, ...arrayElements.slice(idx + 1)];
@@ -142,14 +148,14 @@ class AppContent extends Component {
     clearInterval(this.timer);
   }
 
-  createTodoItem(description, minutes = 0, seconds = 0) {
+  createTodoItem(description, minutes = 0, seconds = '00') {
     return {
       description: description,
       name: this.name,
       date: new Date(),
       id: this.maxId++,
       minutes: +minutes,
-      seconds: +seconds,
+      seconds: seconds,
     };
   }
   search(items, term) {
