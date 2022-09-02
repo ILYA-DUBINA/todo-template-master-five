@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // eslint-disable-next-line import/order
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import './indexTimer.css';
 
 import NewTaskForm from './components/header/NewTaskForm';
 import Footer from './components/main/footer/Footer';
@@ -12,6 +12,9 @@ class AppContent extends Component {
     super(props);
 
     this.maxId = 100;
+    this.name = null;
+    this.timer = 0;
+    this.timerInterval = 1000;
 
     this.state = {
       arrayElements: [
@@ -21,6 +24,7 @@ class AppContent extends Component {
       ],
       term: '',
       filter: null,
+      id: null,
     };
     this.updateItem = (id, newDescription) => {
       this.setState(({ arrayElements }) => {
@@ -56,8 +60,8 @@ class AppContent extends Component {
         };
       });
     };
-    this.addItem = (description, name) => {
-      const newItem = this.createTodoItem(description, name);
+    this.addItem = (description, min, sec) => {
+      const newItem = this.createTodoItem(description, min, sec);
 
       this.setState(({ arrayElements }) => {
         const newArr = [...arrayElements, newItem];
@@ -98,14 +102,60 @@ class AppContent extends Component {
     this.onFilterChange = (filter) => {
       this.setState({ filter });
     };
+
+    this.onPauseTimer = (id) => {
+      this.setState({
+        id: id,
+      });
+    };
+
+    this.onStartTimer = (id) => {
+      this.setState({
+        id: null,
+      });
+      clearInterval(this.timer);
+      this.timer = setInterval(() => {
+        if (this.state.id !== id) {
+          this.setState(({ arrayElements }) => {
+            const idx = arrayElements.findIndex((el) => el.id === id);
+
+            const oldItem = arrayElements[idx];
+            let newItem;
+
+            newItem = {
+              ...oldItem,
+              seconds:
+                oldItem.seconds < '09'
+                  ? (parseInt(oldItem.seconds, 10) + 101).toString().substr(1)
+                  : +oldItem.seconds + 1,
+            };
+
+            if (oldItem.seconds === 59) {
+              newItem = { ...oldItem, minutes: oldItem.minutes + 1, seconds: (oldItem.seconds = '00') };
+            }
+
+            const newArrayElements = [...arrayElements.slice(0, idx), newItem, ...arrayElements.slice(idx + 1)];
+            return {
+              arrayElements: newArrayElements,
+            };
+          });
+        }
+      }, this.timerInterval);
+    };
   }
 
-  createTodoItem(description, name) {
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
+  createTodoItem(description, minutes = 0, seconds = '00') {
     return {
       description: description,
-      name: name,
+      name: this.name,
       date: new Date(),
       id: this.maxId++,
+      minutes: +minutes,
+      seconds: seconds,
     };
   }
   search(items, term) {
@@ -126,6 +176,7 @@ class AppContent extends Component {
     }
     return items;
   }
+
   render() {
     const { arrayElements, term, filter } = this.state;
 
@@ -143,6 +194,8 @@ class AppContent extends Component {
             todos={allActiveItemsVisible}
             onDeleted={this.deletedItem}
             onToggleItem={this.onToggleItem}
+            onStartTimer={this.onStartTimer}
+            onPauseTimer={this.onPauseTimer}
             updateItem={this.updateItem}
             onToggleItemEditing={this.onToggleItemEditing}
           />
