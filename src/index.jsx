@@ -125,8 +125,7 @@ const AppContent = () => {
           const idx = arrayElements.findIndex((el) => el.id === idState);
           const oldItem = arrayElements[idx];
           let newItem;
-          // console.log(oldItem.seconds);
-          // console.log(idx);
+
           newItem = {
             ...oldItem,
             seconds:
@@ -153,7 +152,6 @@ const AppContent = () => {
   const toggleItemEditing = arrayElements.filter((item) => item.name === 'editing').length;
   const allActiveItem = arrayElements.length - toggleItem - toggleItemEditing;
 
-  console.log(arrayElements);
   return (
     <>
       <NewTaskForm addItemElementForm={addItem} />
