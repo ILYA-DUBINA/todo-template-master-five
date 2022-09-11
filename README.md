@@ -1,1 +1,1 @@
-Ссылка на развернутое приложение https://todo-template-master-five-6iemy6tix-ilya-dubina.vercel.app/
+Ссылка на развернутое приложение https://todo-template-master-five-git-hooks-ilya-dubina.vercel.app/
